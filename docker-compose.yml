@@ -5,7 +5,7 @@ services:
     container_name: pkg_sender
     network_mode: host
     volumes:
-      - ./files:/srv/dev-disk-by-uuid-820dec2c-37a0-45b3-af55-34fb34afe767/PS4Roms
+      - /files:/srv/dev-disk-by-uuid-820dec2c-37a0-45b3-af55-34fb34afe767/PS4Roms
     ports:
       - 3333:8033
     environment:
