@@ -10,6 +10,6 @@ services:
     environment:
       - PORT=8033
       - STATIC_FILES=/srv/dev-disk-by-uuid-820dec2c-37a0-45b3-af55-34fb34afe767/PS4Roms
-      - LOCALIP=192.168.0.106
+      - LOCALIP=192.168.0.108
       - PS4IP=192.168.0.109
     restart: unless-stopped
