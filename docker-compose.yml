@@ -5,6 +5,7 @@ services:
     container_name: pkg_sender
     volumes:
       - ./files:/opt/apps/pkg_sender/files
+      - /HDD1:/srv/dev-disk-by-uuid-820dec2c-37a0-45b3-af55-34fb34afe767/
     ports:
       - 3333:8033
     environment:
