@@ -18,8 +18,7 @@ app.use(express.urlencoded());
 
 app.engine('html', mustache_express());
 app.set('view engine', 'html');
-app.set('views', __dirname + '/views');
-console.log('view dir : ' +  __dirname + '/views');
+app.set('views', path.join(__dirname, 'views'));
 
 app.get('/', function (req, res) {
   res.render('index', {"pkgs": get_pkgs()});
