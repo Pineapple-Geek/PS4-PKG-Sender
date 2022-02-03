@@ -17,14 +17,12 @@ app.use(morgan('combined'));
 app.use(express.urlencoded());
 
 app.engine('html', mustache_express());
-app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
-app.set('views', path.join(__dirname, 'views'));
+app.set('views', __dirname + '/views');
 
 app.get('/', function (req, res) {
-  res.render(__dirname + '/views/index.html', {"pkgs":JSON.stringify(get_pkgs())});
+  res.render('index', {"pkgs": get_pkgs()});
 });
-
 app.post('/install', function(req, res) {
   const filepath = req.body.filepath;
 
