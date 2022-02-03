@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>PS4 PKG Sender</title>
-  <link rel="stylesheet" href="css/styles.css?v=1.0">
+  <link rel="icon" type="image/png" href="https://cdn.iconscout.com/icon/free/png-256/playstation-40-739542.png" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
 
@@ -30,15 +30,7 @@ main > .container {
   <main class="flex-shrink-0">
     <div class="container">
       <h1 class="mt-5">List of packages: </h1>
-      <ul class="list-group list-group-flush">
-        {{#pkgs}}
-        <li class="list-group-item">
-          <form action="/install" method="post" style="margin-bottom: 0">
-            <input type="hidden" name="filepath" value="{{filepath}}">
-            {{name}} ({{size}}) <input class="btn btn-primary btn-sm" type="submit" value="Send">
-          </form>
-        </li>
-        {{/pkgs}}
+      <ul id="Pkgs" class="list-group list-group-flush">
       </ul>
     </div>
   </main>
@@ -48,6 +40,62 @@ main > .container {
       <span class="text-muted">Credits to: <a target="_blank" href="https://github.com/justanormaldev/ps4-pkg-sender">justanormaldev</a></span>
     </div>
   </footer>
+
+  <script type="text/javascript">
+    var pkgs = "<%= pkgs %>";
+    var pkgsR = pkgs.replaceAll("&#34;",'"'); 
+
+    var obj = eval('(' + pkgsR + ')');
+    var pkgsA = [];
+              
+    for(var i in obj)
+      pkgsA.push(obj[i]);
+
+    console.log(pkgsA);
+
+    console.log("Array Lenght : " + pkgsA.length);
+
+
+    var ul = document.getElementById("Pkgs");
+
+    for (let i = 0; i < pkgsA.length; i++) {
+      var li = document.createElement("li");
+      li.className = "list-group-item";
+
+      my_form = document.createElement('FORM');
+      my_form.method='post';
+      my_form.action='/install';
+
+      my_tb=document.createElement('INPUT');
+      my_tb.type='hidden';
+      my_tb.name='filepath';
+      my_tb.value= pkgsA[i].filepath;
+      my_form.appendChild(my_tb);
+
+      var my_label = document.createElement("Label");
+      my_label.setAttribute("for",'send');
+      my_label.innerHTML = pkgsA[i].name + " ( " + pkgsA[i].size + " ) ";
+      my_form.appendChild(my_label);
+
+      my_tb2=document.createElement('INPUT');
+      my_tb2.id='send';
+      my_tb2.type='submit';
+      my_tb2.className="btn btn-primary btn-sm";
+      my_tb2.value= "Send";
+      my_form.appendChild(my_tb2);
+      document.body.appendChild(my_form);
+
+      li.appendChild(my_form);
+      ul.appendChild(li);
+    }
+    
+
+  </script>
+
+  <script type="text/javascript">
+
+
+  </script>
 
   <script src="/docs/5.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
   <div id="syno-notification-is-installed"></div>
