@@ -6,12 +6,13 @@ services:
     volumes:
       - ./files:/opt/apps/pkg_sender/files
       - /srv/dev-disk-by-uuid-820dec2c-37a0-45b3-af55-34fb34afe767/:/HDD1
+      - /srv/dev-disk-by-uuid-b3ad2233-4667-446a-b212-d28e547d6fb2/:/HDD2
       - /srv/dev-disk-by-uuid-1913d119-ecc4-41e4-b936-348064e82870/:/HDD3
     ports:
       - 3333:8033
     environment:
       - PORT=8033
       - STATIC_FILES=/opt/apps/pkg_sender/files
-      - LOCALIP=192.168.0.108
-      - PS4IP=192.168.0.109
+      - LOCALIP=192.168.1.89
+      - PS4IP=192.168.1.90
     restart: unless-stopped
