@@ -13,6 +13,6 @@ services:
     environment:
       - PORT=8033
       - STATIC_FILES=/opt/apps/pkg_sender/files
-      - LOCALIP=192.168.1.89
-      - PS4IP=192.168.1.90
+      - LOCALIP=192.168.0.104
+      - PS4IP=192.168.0.102
     restart: unless-stopped
