@@ -13,7 +13,7 @@ services:
       PS4IP: "192.168.0.102"
 
     volumes:
-      - /srv/dev-disk-by-uuid-820dec2c-37a0-45b3-af55-34fb34afe767/PS4Roms :/app/files
+      - /srv/dev-disk-by-uuid-820dec2c-37a0-45b3-af55-34fb34afe767/PS4Roms:/app/files
 
     ports:
       - "3333:3333"
