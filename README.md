@@ -33,12 +33,6 @@ or
 
 - Replace the `files` folder with a symlink pointing to where the PKGs you want available are.
 
-### Symlink pointing
-
-To create a symlink pointing, you just have to be at the root of the project in the docker console and enter this command:
-
-`ln -s /path/to/pkg files`
-
 ## Run
 
 `docker-compose -f /path/to/docker-compose.yml up`
