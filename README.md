@@ -1,49 +1,64 @@
-# PS4 PKG Sender
+# PS4 PKG Sender – Version NAS (Docker + Portainer)
 
-This is a [Docker compose](https://docs.docker.com/compose/) Web Server UI for the [PS4 Remote PKG installer](https://gist.github.com/flatz/60956f2bf1351a563f625357a45cd9c8)
+Ce projet permet d’envoyer des fichiers **PKG** vers une **PS4** via l’outil *Remote PKG Installer*, grâce à une interface web simple et rapide.
 
-## Dependencies
+Cette version est adaptée pour un **NAS sous Docker + Portainer**, avec support de **plusieurs disques fusionnés** dans un seul dossier virtuel.
 
-### Install Docker Compose
+---
 
-Instructions here: [https://docs.docker.com/compose/install/](https://docs.docker.com/compose/install/)
+## 🚀 Fonctionnalités
 
-## Configure
+- Interface web pour envoyer des PKG à la PS4  
+- Compatible Docker / Portainer  
+- Support de plusieurs disques fusionnés  
+- Configuration simple via variables d’environnement  
+- Aucun script externe nécessaire  
 
-### IPs
+---
 
-In the `docker-compose.yml` file, you will see inside the `environment` section:
+## 📦 Installation via Portainer
 
-- LOCALIP=192.168.0.2
-- PS4IP=192.168.0.100
+### 1. Crée les dossiers PKG sur ton NAS
 
-Replace `192.168.0.2` (The value for `LOCALIP`) with the IP of the computer running this.
+/srv/dev-disk-by-uuid-820dec2c-37a0-45b3-af55-34fb34afe767/PS4Roms
+/srv/dev-disk-by-uuid-1913d119-ecc4-41e4-b936-348064e82870/PS4Roms2
 
-Replace `192.168.0.100` (The value for `PS4IP`) with the IP of the PS4.
 
-### Folder to serve PKGs from
+Place tes fichiers `.pkg` dans ces dossiers.
 
-`./files` is the folder that will be used to look for *.pkg files
+---
 
-You can:
+### 2. Ajoute une stack dans Portainer
 
-- Move the PKGs you want available inside the `files` folder.
+Portainer → **Stacks** → **Add Stack**
 
-or
+Nom : `ps4-pkg-sender`
 
-- Replace the `files` folder with a symlink pointing to where the PKGs you want available are.
+Colle le contenu du fichier `docker-compose.yml` :
 
-## Run
+```yaml
+version: "3.8"
 
-`docker-compose -f /path/to/docker-compose.yml up`
+services:
+  ps4pkg:
+    image: justanormaldev/ps4-pkg-sender:latest
+    container_name: ps4-pkg-sender
+    restart: unless-stopped
 
-## Usage
+    environment:
+      LOCALIP: "192.168.0.104"
+      PS4IP: "192.168.0.102"
 
-First, make sure the PS4 is running at the `PS4IP` and the PS4 Remote PKG installer is running.
+    volumes:
+      - /srv/dev-disk-by-uuid-820dec2c-37a0-45b3-af55-34fb34afe767/PS4Roms:/app/files
+      - /srv/dev-disk-by-uuid-1913d119-ecc4-41e4-b936-348064e82870/PS4Roms2:/app/files
 
-You should be able to open in a browser http://192.168.0.2:3333/
-(Replace the `LOCALIP`=192.168.0.2 for the one you configured)
+    ports:
+      - "3333:3333"
 
-It will load a page with all the PKG files it could find inside the `files` folder and their filesize.
+    networks:
+      - ps4net
 
-Clicking on one of them will send it to the PS4 Remote PKG installer.
+networks:
+  ps4net:
+    driver: bridge
