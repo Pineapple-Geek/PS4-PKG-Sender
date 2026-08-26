@@ -7,8 +7,10 @@ services:
     restart: unless-stopped
 
     environment:
-      LOCALIP: "192.168.0.104"   # IP de ton NAS
-      PS4IP: "192.168.0.102"     # IP de ta PS4
+      PORT: "3333"
+      STATIC_FILES: "/app/files"
+      LOCALIP: "192.168.0.104"
+      PS4IP: "192.168.0.102"
 
     volumes:
       - /srv/dev-disk-by-uuid-820dec2c-37a0-45b3-af55-34fb34afe767/PS4Roms:/app/files
