@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   ps4pkg:
-    image: ps4-pkg-sender-pkg_sender:latest
+    image: justanormaldev/ps4-pkg-sender:latest
     container_name: ps4-pkg-sender
     restart: unless-stopped
 
