@@ -97,26 +97,11 @@ app.get('/pkg/:name', (req, res) => {
 // INSTALLATION PS4
 app.post('/install', function(req, res) {
   const filepath = req.body.filepath;
+
+  const dirname = path.dirname(filepath);
+  app.use(express.static(dirname));
   const filename = path.basename(filepath);
-
-  const pkg_uri = `http://${local_ip}:${port}/pkg/${encodeURI(filename)}`;
-  const ps4_api_uri = `http://${ps4_ip}:12800/api/install`;
-  const curl_command = `curl -v "${ps4_api_uri}" --data '{"type":"direct","packages":["${pkg_uri}"]}'`;
-
-  res.write(curl_command + "\n");
-  console.log(curl_command);
-
-  exec(curl_command, (err, stdout, stderr) => {
-    if (err) {
-      res.write(err.toString());
-      res.end();
-      console.error(err);
-      return;
-    }
-    res.write(`stdout: ${stdout}\n`);
-    res.write(`stderr: ${stderr}\n`);
-    res.end();
-  });
+  ps4_install(filename, res);
 });
 
 // DÉMARRAGE SERVEUR
@@ -221,4 +206,25 @@ function parsePkgName(filename) {
     game: rawName,
     variant: variant
   };
+}
+
+function ps4_install(filename, res) {
+  const pkg_uri = `http://${local_ip}:${port}/${encodeURI(filename)}`;
+  const ps4_api_uri = `http://${ps4_ip}:12800/api/install`;
+  const curl_command = `curl -v "${ps4_api_uri}" --data '{"type":"direct","packages":["${pkg_uri}"]}'`;
+  res.write(curl_command);
+  console.log(curl_command);
+  exec(curl_command, (err, stdout, stderr) => {
+    if (err) {
+      res.write(err);
+      res.end();
+      console.error(err);
+      return;
+    }
+    res.write(`stdout: ${stdout}`);
+    console.log(`stdout: ${stdout}`);
+    res.write(`stderr: ${stderr}`);
+    console.log(`stderr: ${stderr}`);
+    res.end();
+  });
 }
