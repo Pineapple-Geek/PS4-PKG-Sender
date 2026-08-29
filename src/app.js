@@ -81,23 +81,9 @@ app.get("/export-games", (req, res) => {
   });
 });
 
-
-// ROUTE POUR SERVIR LES PKG (propre)
-app.get('/pkg/:name', (req, res) => {
-  const name = req.params.name;
-  const fullpath = path.join(static_files_path, name);
-
-  if (!fs.existsSync(fullpath)) {
-    return res.status(404).send("PKG introuvable");
-  }
-
-  res.sendFile(fullpath);
-});
-
 // INSTALLATION PS4
-app.post('/install', function(req, res) {
+app.post('/install', (req, res) => {
   const filepath = req.body.filepath;
-
   const dirname = path.dirname(filepath);
   app.use(express.static(dirname));
   const filename = path.basename(filepath);
@@ -212,19 +198,23 @@ function ps4_install(filename, res) {
   const pkg_uri = `http://${local_ip}:${port}/${encodeURI(filename)}`;
   const ps4_api_uri = `http://${ps4_ip}:12800/api/install`;
   const curl_command = `curl -v "${ps4_api_uri}" --data '{"type":"direct","packages":["${pkg_uri}"]}'`;
-  res.write(curl_command);
+  res.write(curl_command + "\n");
   console.log(curl_command);
+
   exec(curl_command, (err, stdout, stderr) => {
     if (err) {
-      res.write(err);
-      res.end();
+      res.write("ERROR: " + err.message + "\n");
       console.error(err);
-      return;
+      return res.end();
     }
-    res.write(`stdout: ${stdout}`);
+
+    res.write("stdout:\n" + stdout + "\n");
+    res.write("stderr:\n" + stderr + "\n");
+
     console.log(`stdout: ${stdout}`);
-    res.write(`stderr: ${stderr}`);
     console.log(`stderr: ${stderr}`);
+
     res.end();
   });
 }
+
