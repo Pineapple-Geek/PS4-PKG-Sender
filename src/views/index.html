@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>PS4 PKG Sender</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0d0d0d;
+      color: #e6e6e6;
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+    }
+
+    h1 {
+      margin-bottom: 25px;
+      color: #ffffff;
+      font-weight: 600;
+    }
+
+    table {
+      width: 85%;
+      margin: auto;
+      border-collapse: collapse;
+      background: #1a1a1a;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    }
+
+    th, td {
+      padding: 14px;
+      border-bottom: 1px solid #333;
+    }
+
+    th {
+      background: #313131;
+      color: #4da3ff;
+      font-size: 15px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    tr:hover {
+      background: #262626;
+    }
+
+    .btn {
+      background: #4da3ff;
+      color: white;
+      padding: 10px 16px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 14px;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn:hover {
+      background: #1f7fe6;
+    }
+
+    .footer {
+      margin-top: 30px;
+      color: #666;
+      font-size: 13px;
+    }
+    .card {
+      width: 250px;
+      background: #1a1a1a;
+      border-radius: 12px;
+      padding: 15px;
+      margin: 15px;
+      display: inline-block;
+      text-align: center;
+      box-shadow: 0 0 10px rgba(0,0,0,0.4);
+    }
+
+    .card-image img {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+    }
+
+    .card-title {
+      margin-top: 10px;
+      font-size: 18px;
+      color: #fff;
+      font-weight: bold;
+    }
+
+    .card-buttons {
+      margin-top: 15px;
+    }
+
+    .card-buttons .btn {
+      background: #4da3ff;
+      color: white;
+      padding: 8px 12px;
+      border-radius: 6px;
+      margin: 5px;
+      border: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>PS4 PKG Sender</h1>
+  
+  <form action="/export-games" method="GET">
+    <button class="btn export-btn">Exporter la liste des jeux</button>
+  </form>
+
+  <div class="cards-container">
+    {{#pkgs}}
+    <div class="card">
+
+      <div class="card-image">
+        <img src="{{image}}" alt="{{game}}">
+      </div>
+
+      <div class="card-title">
+        {{game}}
+      </div>
+
+      <div class="card-buttons">
+        {{#files}}
+        <form action="/install" method="POST">
+          <input type="hidden" name="filepath" value="{{filepath}}">
+          <button class="btn">{{variant}}</button>
+        </form>
+        {{/files}}
+      </div>
+
+    </div>
+    {{/pkgs}}
+  </div>
+
+  <div class="footer">
+    PS4 PKG Sender
+  </div>
+</body>
+</html>

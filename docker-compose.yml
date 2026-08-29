@@ -1,9 +1,11 @@
 version: "3.8"
 
 services:
-  ps4pkg:
-    image: justanormaldev/ps4-pkg-sender:latest
-    container_name: ps4-pkg-sender
+  pkg_sender:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: pkg_sender
     restart: unless-stopped
 
     environment:
