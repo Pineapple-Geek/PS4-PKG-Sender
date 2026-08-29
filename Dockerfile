@@ -10,4 +10,4 @@ COPY bin/run bin/run
 
 EXPOSE 3333
 
-CMD ["bin/run"]
+CMD ["node", "src/app.js"]
